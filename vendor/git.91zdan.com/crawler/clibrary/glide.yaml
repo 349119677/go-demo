@@ -1,0 +1,6 @@
+package: clibrary
+import:
+- package: github.com/op/go-logging
+  version: ^1.0.0
+- package: golang.org/x/text
+  version: ^0.1.0

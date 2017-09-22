@@ -1,0 +1,14 @@
+hash: 8cd17a6bd6ba0f950220deff03c4ee10479d0a7deeae030724f89552c2802d5a
+updated: 2017-09-19T14:22:44.907669733+08:00
+imports:
+- name: github.com/op/go-logging
+  version: b2cb9fa56473e98db8caba80237377e83fe44db5
+- name: golang.org/x/text
+  version: ab5ac5f9a8deb4855a60fab02bc61a4ec770bd49
+  subpackages:
+  - encoding
+  - encoding/internal
+  - encoding/internal/identifier
+  - encoding/simplifiedchinese
+  - transform
+testImports: []
