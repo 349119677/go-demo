@@ -17,7 +17,6 @@ func CleanOne(oneLiteral Literal) *ResponseMessage {
 	var response = new(ResponseMessage)
 	header := mailMessage.Header
 
-
 	// 发件人
 	from, err := header.AddressList("From")
 	if err != nil {
@@ -35,6 +34,9 @@ func CleanOne(oneLiteral Literal) *ResponseMessage {
 	// 原始ip
 	ip := header.Get("X-Originating-IP")
 	response.Ip = ip
+
+	// 是否是原始邮件
+	response.IsOriginal = IsOriginal(ip)
 
 	// 解析邮件body
 	for {
