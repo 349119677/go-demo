@@ -13,6 +13,6 @@ func Test(t *testing.T) {
 		fmt.Println("主题：", value.Subject)
 		fmt.Println("IP：", value.Ip)
 		fmt.Println("IsOriginal：", value.IsOriginal)
-		//fmt.Println("发件内容：", value.Content)
+		fmt.Println("发件内容：", value.Content)
 	}
 }

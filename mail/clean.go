@@ -19,7 +19,7 @@ func CleanOne(oneLiteral Literal) *ResponseMessage {
 
 	// 发件人
 	from, err := header.AddressList("From")
-	if err != nil {
+	if err != nil || len(from) <= 0 {
 		return nil
 	}
 	response.From = from[0].Address
@@ -64,8 +64,11 @@ func GetResolvedMailList(literalList []Literal) []*ResponseMessage {
 	response := []*ResponseMessage{}
 	for _, value := range literalList {
 		resolvedOneMail := CleanOne(value)
-		// 这边可能要根据具体邮件跳过某些邮件，定位信用卡邮件
-		response = append(response, resolvedOneMail)
+		if resolvedOneMail != nil{
+			// 这边可能要根据具体邮件跳过某些邮件，定位信用卡邮件
+			response = append(response, resolvedOneMail)
+		}
+
 	}
 	return response
 }
