@@ -1,0 +1,3 @@
+package: cecommerce
+import:
+- package: git.91zdan.com/crawler/clibrary
