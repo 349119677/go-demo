@@ -4,25 +4,16 @@ import (
 	"fmt"
 	"net/http"
 	"io/ioutil"
-	"time"
 )
 
 func main() {
 
-	url := "https://w.mail.qq.com/cgi-bin/mail_list?fromsidebar=1&sid=wI1y7iOnJYFhAVQNUcfT5vNw%2C4%2Cc9bRKC-yz4MY.&folderid=1&page=0&pagesize=10&sorttype=time&t=mail_list&loc=today%2C%2C%2C151&version=html"
+	url := "https://w.mail.qq.com/cgi-bin/mail_list?fromsidebar=1&sid=L2LY_jfWCq5NJXApUcfT5vNw%2C8%2CqVk8qUWpqeU1od3lsUXk1dkd4VjRVWHVsdDVMRGhFV1NDY2k5VWFQc1pyY18."
 
 	req, _ := http.NewRequest("GET", url, nil)
 
+	req.Header.Add("cookie", "pgv_pvi=1444466688; pgv_si=s9319421952; ptisp=ctc; RK=GuGHBSXaF0; ptcz=9a2068468ed2f44bc0fcd05f601db7cf2d058e08d098454b1b33e1259a3b44cb; pt2gguin=o1436863821; uin=o1436863821; skey=@zYsEyBNXs; p_uin=o1436863821; p_skey=VO*QjjyMhwylQy5vGxV4UXult5LDhEWSCci9UaPsZrc_; pt4_token=0InC20hYSwbfq463UhJfGasMAREFp1ClsfZFC4exQeQ_; wimrefreshrun=0&; qm_domain=https://mail.qq.com; qm_ptsk=1436863821&@zYsEyBNXs; foxacc=1436863821&0; qm_loginfrom=1436863821&wsk; webp=1; CCSHOW=000001; mcookie=0&y; qm_flag=0; qqmail_alias=1436863821@qq.com; msid=L2LY_jfWCq5NJXApXcLT5vNw,4,qVk8qUWpqeU1od3lsUXk1dkd4VjRVWHVsdDVMRGhFV1NDY2k5VWFQc1pyY18.; sid=1436863821&e2f320108c673f7f2c650c4d217ee6d5,qVk8qUWpqeU1od3lsUXk1dkd4VjRVWHVsdDVMRGhFV1NDY2k5VWFQc1pyY18.; qm_username=1436863821; ssl_edition=sail.qq.com; edition=mail.qq.com; username=1436863821&1436863821; device=; qm_sk=1436863821&UcfT5vNw; qm_ssum=1436863821&f4ac78a218fe4e3e9b71e2c4eb78c38b; new_mail_num=1436863821&0")
 	req.Header.Add("host", "w.mail.qq.com")
-	req.Header.Add("connection", "keep-alive")
-	req.Header.Add("cache-control", "max-age=0")
-	req.Header.Add("upgrade-insecure-requests", "1")
-	req.Header.Add("user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36")
-	req.Header.Add("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
-	req.Header.Add("dnt", "1")
-	req.Header.Add("referer", "https://w.mail.qq.com/cgi-bin/today?sid=wI1y7iOnJYFhAVQNXcLT5vNw,4,c9bRKC-yz4MY.&first=1")
-
-	req.Header.Add("accept-language", "zh-CN,zh;q=0.8Cookie:pgv_pvi=5357012992; RK=GuGHBSXaF0; luin=o1436863821; lskey=000100003d6cefcf1114d71eb87e3f7e71608d66ef8b246d5448bacaf954e861cb630b260edf641621a54800; pt2gguin=o1436863821; p_luin=o1436863821; p_lskey=00040000c3b1aaa0e80beebc93b7414126314913cd981e68b4ccac90aaab9ce89d003c5609e581501227cded; pcache=318cad394ccfc7fMTUxMDM5NDAwMg@1436863821@4; mpwd=E4F2DC9AF57CFE52D317FAD1D9851F105C640F1B29D1FCFCE13723CCB754F57D@1436863821@4; mcookie=0&y; qm_flag=0; qqmail_alias=1436863821@qq.com; msid=wI1y7iOnJYFhAVQNXcLT5vNw,4,c9bRKC-yz4MY.; sid=1436863821&dc927c9a483fe4da8723f9d2076868bc,c9bRKC-yz4MY.; qm_username=1436863821; ssl_edition=sail.qq.com; edition=mail.qq.com; username=1436863821&1436863821; qm_sk=1436863821&UcfT5vNw; qm_ssum=1436863821&00625b7741651f776ba9fc774d51d50e; new_mail_num=1436863821&11; device=")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -31,5 +22,5 @@ func main() {
 
 	fmt.Println(res)
 	fmt.Println(string(body))
-	time.Sleep(time.Second * 1000)
+
 }
