@@ -53,10 +53,6 @@ func TestRsa(t *testing.T) {
 	if err := applyPubEPriD(); err != nil {
 		log.Println(err)
 	}
-	// 公钥解密 私钥加密
-	if err := applyPriEPubD(); err != nil {
-		log.Println(err)
-	}
 }
 
 // 初始化设置公钥和私钥
@@ -94,22 +90,5 @@ func applyPubEPriD() error {
 		return errors.New(`解密失败`)
 	}
 	fmt.Println(string(pridecrypt))
-	return nil
-}
-
-// 公钥解密私钥加密
-func applyPriEPubD() error {
-	prienctypt, err := RSA.PriKeyENCTYPT([]byte(`hello world`))
-	if err != nil {
-		return err
-	}
-
-	pubdecrypt, err := RSA.PubKeyDECRYPT(prienctypt)
-	if err != nil {
-		return err
-	}
-	if string(pubdecrypt) != `hello world` {
-		return errors.New(`解密失败`)
-	}
 	return nil
 }
