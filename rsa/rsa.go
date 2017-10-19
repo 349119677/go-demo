@@ -21,9 +21,9 @@ type RSASecurity struct {
 }
 
 // 公钥加密
-func (rsas *RSASecurity) PubKeyENCTYPT(input []byte) ([]byte, error) {
+func (rsas *RSASecurity) RsaEncrypt(input []byte) ([]byte, error) {
 	if rsas.pubkey == nil {
-		return []byte(""), errors.New(`Please set the public key in advance`)
+		return []byte(""), errors.New(`请先设置公钥`)
 	}
 	output := bytes.NewBuffer(nil)
 	err := pubKeyIO(rsas.pubkey, bytes.NewReader(input), output)
@@ -34,9 +34,9 @@ func (rsas *RSASecurity) PubKeyENCTYPT(input []byte) ([]byte, error) {
 }
 
 // 私钥解密
-func (rsas *RSASecurity) PriKeyDECRYPT(input []byte) ([]byte, error) {
+func (rsas *RSASecurity) RsaDecrypt(input []byte) ([]byte, error) {
 	if rsas.prikey == nil {
-		return []byte(""), errors.New(`Please set the private key in advance`)
+		return []byte(""), errors.New(`请先设置私钥`)
 	}
 	output := bytes.NewBuffer(nil)
 	err := priKeyIO(rsas.prikey, bytes.NewReader(input), output)
@@ -50,19 +50,24 @@ func (rsas *RSASecurity) PriKeyDECRYPT(input []byte) ([]byte, error) {
 // 设置公钥
 func (rsas *RSASecurity) SetPublicKey(pubStr string) (err error) {
 	rsas.pubStr = pubStr
-	rsas.pubkey, err = rsas.GetPublickey()
+	rsas.pubkey, err = rsas.getPublickey()
 	return err
 }
 
 // 设置私钥
 func (rsas *RSASecurity) SetPrivateKey(priStr string) (err error) {
 	rsas.priStr = priStr
-	rsas.prikey, err = rsas.GetPrivatekey()
+	rsas.prikey, err = rsas.getPrivatekey()
 	return err
 }
 
+// *rsa.PrivateKey
+func (rsas *RSASecurity) getPublickey() (*rsa.PublicKey, error) {
+	return getPubKey([]byte(rsas.pubStr))
+}
+
 // *rsa.PublicKey
-func (rsas *RSASecurity) GetPrivatekey() (*rsa.PrivateKey, error) {
+func (rsas *RSASecurity) getPrivatekey() (*rsa.PrivateKey, error) {
 	return getPriKey([]byte(rsas.priStr))
 }
 
@@ -97,12 +102,7 @@ func getPubKey(publickey []byte) (*rsa.PublicKey, error) {
 	return pub.(*rsa.PublicKey), err
 }
 
-// *rsa.PrivateKey
-func (rsas *RSASecurity) GetPublickey() (*rsa.PublicKey, error) {
-	return getPubKey([]byte(rsas.pubStr))
-}
-
-// 公钥加密或解密Reader
+// 公钥加密Reader
 func pubKeyIO(pub *rsa.PublicKey, in io.Reader, out io.Writer) (err error) {
 	k := (pub.N.BitLen() + 7) / 8
 
@@ -135,7 +135,7 @@ func pubKeyIO(pub *rsa.PublicKey, in io.Reader, out io.Writer) (err error) {
 	return nil
 }
 
-// 私钥加密或解密Reader
+// 私钥解密Reader
 func priKeyIO(pri *rsa.PrivateKey, r io.Reader, w io.Writer) (err error) {
 	k := (pri.N.BitLen() + 7) / 8
 
@@ -155,7 +155,6 @@ func priKeyIO(pri *rsa.PrivateKey, r io.Reader, w io.Writer) (err error) {
 		} else {
 			b = buf
 		}
-
 		b, err = rsa.DecryptPKCS1v15(rand.Reader, pri, b)
 
 		if err != nil {

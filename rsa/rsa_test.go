@@ -2,10 +2,10 @@ package myRsa
 
 import (
 	"log"
-	"errors"
 	"fmt"
 	"encoding/base64"
 	"testing"
+	"errors"
 )
 
 var Pubkey = `-----BEGIN 公钥-----
@@ -47,14 +47,6 @@ z/QUKFb1gIGcKxYr+LqQ25/+TGvINjuf6P3fVkHL0U8jOG0IqpPJXO3Vl9B8ewWL
 cFQVB/nQfmaMa4ChK0QEUe+Mqi++MwgYbRHx1lIOXEfUJO+PXrMekw==
 -----END 私钥-----
 `
-
-func TestRsa(t *testing.T) {
-	// 公钥加密 私钥解密
-	if err := applyPubEPriD(); err != nil {
-		log.Println(err)
-	}
-}
-
 // 初始化设置公钥和私钥
 func init() {
 	if err := RSA.SetPublicKey(Pubkey); err != nil {
@@ -65,9 +57,15 @@ func init() {
 	}
 }
 
+func TestRsa(t *testing.T) {
+	if err := 加密解密(); err != nil {
+		log.Println(err)
+	}
+}
+
 // 公钥加密私钥解密
-func applyPubEPriD() error {
-	pubenctypt, err := RSA.PubKeyENCTYPT([]byte(`你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+func 加密解密() error {
+	pubenctypt, err := RSA.RsaEncrypt([]byte(`你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
 	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
 	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
 	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
@@ -77,7 +75,7 @@ func applyPubEPriD() error {
 		return err
 	}
 	fmt.Println(base64.StdEncoding.EncodeToString(pubenctypt))
-	pridecrypt, err := RSA.PriKeyDECRYPT(pubenctypt)
+	pridecrypt, err := RSA.RsaDecrypt(pubenctypt)
 	if err != nil {
 		return err
 	}
