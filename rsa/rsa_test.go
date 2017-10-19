@@ -1,14 +1,12 @@
-package gorsa
+package myRsa
 
 import (
-	"testing"
+	"log"
+	"errors"
 	"fmt"
 	"encoding/base64"
+	"testing"
 )
-
-func init() {
-
-}
 
 var Pubkey = `-----BEGIN 公钥-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAk+89V7vpOj1rG6bTAKYM
@@ -50,68 +48,68 @@ cFQVB/nQfmaMa4ChK0QEUe+Mqi++MwgYbRHx1lIOXEfUJO+PXrMekw==
 -----END 私钥-----
 `
 
-func Test_SetPublicKey(t *testing.T) {
-	if err := RSA.SetPublicKey(Pubkey); err != nil {
-		t.Error(err)
+func TestRsa(t *testing.T) {
+	// 公钥加密 私钥解密
+	if err := applyPubEPriD(); err != nil {
+		log.Println(err)
+	}
+	// 公钥解密 私钥加密
+	if err := applyPriEPubD(); err != nil {
+		log.Println(err)
 	}
 }
 
-func Test_SetPrivateKey(t *testing.T) {
+// 初始化设置公钥和私钥
+func init() {
+	if err := RSA.SetPublicKey(Pubkey); err != nil {
+		log.Fatalln(`set public key :`, err)
+	}
 	if err := RSA.SetPrivateKey(Pirvatekey); err != nil {
-		t.Error(err)
+		log.Fatalln(`set private key :`, err)
 	}
 }
 
 // 公钥加密私钥解密
-func Test_PubENCTYPTPriDECRYPT(t *testing.T) {
-	if err := RSA.SetPublicKey(Pubkey); err != nil {
-		t.Error(err)
-	}
-	if err := RSA.SetPrivateKey(Pirvatekey); err != nil {
-		t.Error(err)
-	}
-	pubenctypt, err := RSA.PubKeyENCTYPT([]byte(`好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人
-	好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人
-	好人好人好人好人好人好人好人好人好人好人好人好人好人好人
-	好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人
-	好人好人好人好人好人好人好人好人好人好人好人好人好人
-	好人好人好人好人好人好人好人好人好人好人好人好人`))
+func applyPubEPriD() error {
+	pubenctypt, err := RSA.PubKeyENCTYPT([]byte(`你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好`))
 	if err != nil {
-		t.Error(err)
+		return err
 	}
 	fmt.Println(base64.StdEncoding.EncodeToString(pubenctypt))
 	pridecrypt, err := RSA.PriKeyDECRYPT(pubenctypt)
 	if err != nil {
-		t.Error(err)
+		return err
 	}
-	if string(pridecrypt) != `好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人
-	好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人
-	好人好人好人好人好人好人好人好人好人好人好人好人好人好人
-	好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人好人
-	好人好人好人好人好人好人好人好人好人好人好人好人好人
-	好人好人好人好人好人好人好人好人好人好人好人好人` {
-		t.Error(`不符合预期`)
+	if string(pridecrypt) != `你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好` {
+		return errors.New(`解密失败`)
 	}
-	fmt.Println( string(pridecrypt))
+	fmt.Println(string(pridecrypt))
+	return nil
 }
 
 // 公钥解密私钥加密
-func Test_PriENCTYPTPubDECRYPT(t *testing.T) {
-	if err := RSA.SetPublicKey(Pubkey); err != nil {
-		t.Error(err)
-	}
-	if err := RSA.SetPrivateKey(Pirvatekey); err != nil {
-		t.Error(err)
-	}
+func applyPriEPubD() error {
 	prienctypt, err := RSA.PriKeyENCTYPT([]byte(`hello world`))
 	if err != nil {
-		t.Error(err)
+		return err
 	}
+
 	pubdecrypt, err := RSA.PubKeyDECRYPT(prienctypt)
 	if err != nil {
-		t.Error(err)
+		return err
 	}
 	if string(pubdecrypt) != `hello world` {
-		t.Error(`不符合预期`)
+		return errors.New(`解密失败`)
 	}
+	return nil
 }
