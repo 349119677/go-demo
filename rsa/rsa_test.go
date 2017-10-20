@@ -5,47 +5,48 @@ import (
 	"fmt"
 	"encoding/base64"
 	"testing"
-	"errors"
 )
 
-var Pubkey = `-----BEGIN 公钥-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAk+89V7vpOj1rG6bTAKYM
-56qmFLwNCBVDJ3MltVVtxVUUByqc5b6u909MmmrLBqS//PWC6zc3wZzU1+ayh8xb
-UAEZuA3EjlPHIaFIVIz04RaW10+1xnby/RQE23tDqsv9a2jv/axjE/27b62nzvCW
-eItu1kNQ3MGdcuqKjke+LKhQ7nWPRCOd/ffVqSuRvG0YfUEkOz/6UpsPr6vrI331
-hWRB4DlYy8qFUmDsyvvExe4NjZWblXCqkEXRRAhi2SQRCl3teGuIHtDUxCskRIDi
-aMD+Qt2Yp+Vvbz6hUiqIWSIH1BoHJer/JOq2/O6X3cmuppU4AdVNgy8Bq236iXvr
-MQIDAQAB
------END 公钥-----
+var Pubkey = `
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA03CEqnRzYWtI5PHgIaMJ
+nMyZSTaDbBoxbrPJt0qpjncB9J+bJlC3xvOOOaEdEpQWOrgPttWxyps60scHrjht
+WckIo9Re/FGOMrL7f+cLLxPhGzMc/o7fPd6NhPXxUKK/Iu07ISJsu+D+1Fl6dHY7
+SFT7UQX/iySYRWep6Vcrk0zQYgO1lAeUPDi60HeR/UlIFamSyrksvFlZu4p2hjY5
+un7aiaC5yMQma6Pmnt1B8kuWEyzOtxIVH7Ryb5ahdEn2IYbG+rgrhKn7JSmY08kf
+IYHdA63TMobOEcGRU3ftdIeBlIximtm2uvIcgmJI5peOihq/fctovs6J0EvbVho7
+iQIDAQAB
+-----END PUBLIC KEY-----
 `
 
-var Pirvatekey = `-----BEGIN 私钥-----
-MIIEpAIBAAKCAQEAk+89V7vpOj1rG6bTAKYM56qmFLwNCBVDJ3MltVVtxVUUByqc
-5b6u909MmmrLBqS//PWC6zc3wZzU1+ayh8xbUAEZuA3EjlPHIaFIVIz04RaW10+1
-xnby/RQE23tDqsv9a2jv/axjE/27b62nzvCWeItu1kNQ3MGdcuqKjke+LKhQ7nWP
-RCOd/ffVqSuRvG0YfUEkOz/6UpsPr6vrI331hWRB4DlYy8qFUmDsyvvExe4NjZWb
-lXCqkEXRRAhi2SQRCl3teGuIHtDUxCskRIDiaMD+Qt2Yp+Vvbz6hUiqIWSIH1BoH
-Jer/JOq2/O6X3cmuppU4AdVNgy8Bq236iXvrMQIDAQABAoIBAQCCbxZvHMfvCeg+
-YUD5+W63dMcq0QPMdLLZPbWpxMEclH8sMm5UQ2SRueGY5UBNg0WkC/R64BzRIS6p
-jkcrZQu95rp+heUgeM3C4SmdIwtmyzwEa8uiSY7Fhbkiq/Rly6aN5eB0kmJpZfa1
-6S9kTszdTFNVp9TMUAo7IIE6IheT1x0WcX7aOWVqp9MDXBHV5T0Tvt8vFrPTldFg
-IuK45t3tr83tDcx53uC8cL5Ui8leWQjPh4BgdhJ3/MGTDWg+LW2vlAb4x+aLcDJM
-CH6Rcb1b8hs9iLTDkdVw9KirYQH5mbACXZyDEaqj1I2KamJIU2qDuTnKxNoc96HY
-2XMuSndhAoGBAMPwJuPuZqioJfNyS99x++ZTcVVwGRAbEvTvh6jPSGA0k3cYKgWR
-NnssMkHBzZa0p3/NmSwWc7LiL8whEFUDAp2ntvfPVJ19Xvm71gNUyCQ/hojqIAXy
-tsNT1gBUTCMtFZmAkUsjqdM/hUnJMM9zH+w4lt5QM2y/YkCThoI65BVbAoGBAMFI
-GsIbnJDNhVap7HfWcYmGOlWgEEEchG6Uq6Lbai9T8c7xMSFc6DQiNMmQUAlgDaMV
-b6izPK4KGQaXMFt5h7hekZgkbxCKBd9xsLM72bWhM/nd/HkZdHQqrNAPFhY6/S8C
-IjRnRfdhsjBIA8K73yiUCsQlHAauGfPzdHET8ktjAoGAQdxeZi1DapuirhMUN9Zr
-kr8nkE1uz0AafiRpmC+cp2Hk05pWvapTAtIXTo0jWu38g3QLcYtWdqGa6WWPxNOP
-NIkkcmXJjmqO2yjtRg9gevazdSAlhXpRPpTWkSPEt+o2oXNa40PomK54UhYDhyeu
-akuXQsD4mCw4jXZJN0suUZMCgYAgzpBcKjulCH19fFI69RdIdJQqPIUFyEViT7Hi
-bsPTTLham+3u78oqLzQukmRDcx5ddCIDzIicMfKVf8whertivAqSfHytnf/pMW8A
-vUPy5G3iF5/nHj76CNRUbHsfQtv+wqnzoyPpHZgVQeQBhcoXJSm+qV3cdGjLU6OM
-HgqeaQKBgQCnmL5SX7GSAeB0rSNugPp2GezAQj0H4OCc8kNrHK8RUvXIU9B2zKA2
-z/QUKFb1gIGcKxYr+LqQ25/+TGvINjuf6P3fVkHL0U8jOG0IqpPJXO3Vl9B8ewWL
-cFQVB/nQfmaMa4ChK0QEUe+Mqi++MwgYbRHx1lIOXEfUJO+PXrMekw==
------END 私钥-----
+var Pirvatekey = `
+-----BEGIN PRIVATE KEY-----
+MIIEpAIBAAKCAQEA03CEqnRzYWtI5PHgIaMJnMyZSTaDbBoxbrPJt0qpjncB9J+b
+JlC3xvOOOaEdEpQWOrgPttWxyps60scHrjhtWckIo9Re/FGOMrL7f+cLLxPhGzMc
+/o7fPd6NhPXxUKK/Iu07ISJsu+D+1Fl6dHY7SFT7UQX/iySYRWep6Vcrk0zQYgO1
+lAeUPDi60HeR/UlIFamSyrksvFlZu4p2hjY5un7aiaC5yMQma6Pmnt1B8kuWEyzO
+txIVH7Ryb5ahdEn2IYbG+rgrhKn7JSmY08kfIYHdA63TMobOEcGRU3ftdIeBlIxi
+mtm2uvIcgmJI5peOihq/fctovs6J0EvbVho7iQIDAQABAoIBAG/9cMc31sUKphld
+Y3FtgXHjjG0Sypk/Zl9UKstCaHxk3ExNHUg2CKD/75zmkRd+CCghxXD5zqmZfpaV
+hKPqj0C3EjR0D7tlFwQTeNJN9caBqQFXGUxbMDL85cg+3AnxqXs+W8s5CI6apV6j
+5hA5bzzohhRsMOXqBBz+wygsW5Awb8Jy+tjIeGXCQeAA7E4RLIP93MRc/cstOh0G
+i82B2nzPNcdlPjr2t/rXxKFfIg0mJKCi+Jsu0owWp0EaUX5ZGzY0kZLwmlSgClhh
+3/M8WEU99gLhE1DkXXqRdxb0CoX/5DyEXxlZ11QAqLhcDrjIjd8TA+Kssxv2yQ5C
+kzSET+ECgYEA08UHXDfHpU2Nbl1v0ah65JgepGOizC24oGd9W8e6QIQzHN8CVcT+
+yU0qhXD3y2o8CpzQO02er8WluHkgTZLu0xxggoXdtN6F5jyPW/Ig4nC5fCNER4HD
+MNzQYpRwvJAouaDaygKfZ42RCLS33pAfHaS3u/ooPm57+Pw3/+Qz3L8CgYEA/5nW
+qwwahM4FzpYONaFY9cWQWohoyLDEM+nJqWApMmSKBoqeWWSry44agwloH0xZ/Ugq
+8qayXYrXa0JD7DZ5NxXJ/k8yCg0E4N4g33J4Tau4x0tEgdKw+2/zHgvSnH4bF4KW
+MYnxYWyRbB5XliOPG1lfsBsGxfNEEuK94jyRUbcCgYAUWpyhfW7/8VtFn09vDE17
+iS9wx27PRxm2uRuwZZr+NnafMMQNsFh4yqTqnHgEohpRPs840/YLmOibuXCkZBn2
+SoTwJqOvja+6+FkjEjuc6A674rveT5eOK7sProrDZOu1I8PDpMrjbhThjFUb3ChR
+dhJ+y8VwcrgRr1RGkQ13CwKBgQDR+EFln/rE8C3LCG/B1Lqso1AzXu2dN8Dl2H7m
+Ge2dzQOp3gO48b9C54iV7otPcrxWGgvV6+SIfX77SKNdj15CRy75L3uu0AUa6L7e
+cD2tqIyRgx5S+46R7uQr4ZBxKBL/XDIfne7hlntb8w0GdE2iLOgzVfBZer6IOSW9
+jP3fvwKBgQDBPvt9E3AuHv6a2/aZmIggo7muPbolZPqM4ZB1+w4wyb5UsZuMALdM
+SEM0PUzcR6yYDoIkZSq3HQuI1BY6qS3a8COniKkT2mFEpSfri+cErb3h7gwYhUkx
+QkuJJVGLNNucKccquH/+NXTWaD9Isd4kmvY33YChb3n6l8SLTtZWNA==
+-----END PRIVATE KEY-----
 `
 // 初始化设置公钥和私钥
 func init() {
@@ -57,36 +58,20 @@ func init() {
 	}
 }
 
-func TestRsa(t *testing.T) {
-	if err := 加密解密(); err != nil {
-		log.Println(err)
-	}
-}
-
 // 公钥加密私钥解密
-func 加密解密() error {
-	pubenctypt, err := RSA.RsaEncrypt([]byte(`你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
-	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
-	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
-	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
-	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
-	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好`))
+func Test_加密解密(t *testing.T) {
+	sourceStr := "你好"
+	pubenctypt, err := RSA.RsaEncrypt([]byte(sourceStr))
 	if err != nil {
-		return err
+		fmt.Println(err)
 	}
-	fmt.Println(base64.StdEncoding.EncodeToString(pubenctypt))
 	pridecrypt, err := RSA.RsaDecrypt(pubenctypt)
 	if err != nil {
-		return err
+		fmt.Println(err)
 	}
-	if string(pridecrypt) != `你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
-	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
-	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
-	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
-	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
-	你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好` {
-		return errors.New(`解密失败`)
-	}
+	fmt.Println("源字符串为：", sourceStr)
+	fmt.Println("解析后字符串为：", string(pridecrypt))
+	fmt.Println("加密后字符串为：", base64.StdEncoding.EncodeToString(pubenctypt))
 	fmt.Println(string(pridecrypt))
-	return nil
+
 }

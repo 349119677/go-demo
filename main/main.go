@@ -1,31 +1,60 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-	"io/ioutil"
+	"crypto/rsa"
+	"crypto/x509"
+	"encoding/pem"
+	"crypto/rand"
+	"flag"
+	"log"
+	"os"
 )
 
 func main() {
+	var bits int
+	flag.IntVar(&bits, "b", 2048, "密钥长度，默认为1024位")
+	if err := GenRsaKey(bits); err != nil {
+		log.Fatal("密钥文件生成失败！")
+	}
+	log.Println("密钥文件生成成功！")
+}
 
-	url := "http://jybkapi.51meishidi.com/v1/notice/loan?sign=760D189FBDB864D25915422A1CBD1F03"
-
-	req, _ := http.NewRequest("GET", url, nil)
-
-	req.Header.Add("host", "jybkapi.51meishidi.com")
-	req.Header.Add("connection", "keep-alive")
-	req.Header.Add("accept", "*/*")
-	req.Header.Add("user-agent", "JYBK/1.1.0927 (iPhone; iOS 11.0.3; Scale/2.00)")
-	req.Header.Add("accept-language", "zh-Hans-CN;q=1")
-	req.Header.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vanlia2FwaS41MW1laXNoaWRpLmNvbS92MS9hdXRob3JpemF0aW9ucyIsImlhdCI6MTUwODQ2NDU2OSwiZXhwIjo3NTA4NDY0NTA5LCJuYmYiOjE1MDg0NjQ1NjksImp0aSI6IllLZ1pKVDk2WU9YbHFzR0QiLCJzdWIiOjUzNTk3ODZ9.vxEw4slmOMmtj6QNuMGagIAtayq0CpKS5ZWTGqQZz8c")
-	req.Header.Add("accept-encoding", "gzip, deflate")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
+func GenRsaKey(bits int) error {
+	// 生成私钥文件
+	privateKey, err := rsa.GenerateKey(rand.Reader, bits)
+	if err != nil {
+		return err
+	}
+	derStream := x509.MarshalPKCS1PrivateKey(privateKey)
+	block := &pem.Block{
+		Type:  "PRIVATE KEY",
+		Bytes: derStream,
+	}
+	file, err := os.Create("private.pem")
+	if err != nil {
+		return err
+	}
+	err = pem.Encode(file, block)
+	if err != nil {
+		return err
+	}
+	// 生成公钥文件
+	publicKey := &privateKey.PublicKey
+	derPkix, err := x509.MarshalPKIXPublicKey(publicKey)
+	if err != nil {
+		return err
+	}
+	block = &pem.Block{
+		Type:  "PUBLIC KEY",
+		Bytes: derPkix,
+	}
+	file, err = os.Create("public.pem")
+	if err != nil {
+		return err
+	}
+	err = pem.Encode(file, block)
+	if err != nil {
+		return err
+	}
+	return nil
 }
