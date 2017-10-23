@@ -20,39 +20,40 @@ iQIDAQAB
 `
 
 var Pirvatekey = `
------BEGIN PRIVATE KEY-----
-MIIEpAIBAAKCAQEA03CEqnRzYWtI5PHgIaMJnMyZSTaDbBoxbrPJt0qpjncB9J+b
-JlC3xvOOOaEdEpQWOrgPttWxyps60scHrjhtWckIo9Re/FGOMrL7f+cLLxPhGzMc
-/o7fPd6NhPXxUKK/Iu07ISJsu+D+1Fl6dHY7SFT7UQX/iySYRWep6Vcrk0zQYgO1
-lAeUPDi60HeR/UlIFamSyrksvFlZu4p2hjY5un7aiaC5yMQma6Pmnt1B8kuWEyzO
-txIVH7Ryb5ahdEn2IYbG+rgrhKn7JSmY08kfIYHdA63TMobOEcGRU3ftdIeBlIxi
-mtm2uvIcgmJI5peOihq/fctovs6J0EvbVho7iQIDAQABAoIBAG/9cMc31sUKphld
-Y3FtgXHjjG0Sypk/Zl9UKstCaHxk3ExNHUg2CKD/75zmkRd+CCghxXD5zqmZfpaV
-hKPqj0C3EjR0D7tlFwQTeNJN9caBqQFXGUxbMDL85cg+3AnxqXs+W8s5CI6apV6j
-5hA5bzzohhRsMOXqBBz+wygsW5Awb8Jy+tjIeGXCQeAA7E4RLIP93MRc/cstOh0G
-i82B2nzPNcdlPjr2t/rXxKFfIg0mJKCi+Jsu0owWp0EaUX5ZGzY0kZLwmlSgClhh
-3/M8WEU99gLhE1DkXXqRdxb0CoX/5DyEXxlZ11QAqLhcDrjIjd8TA+Kssxv2yQ5C
-kzSET+ECgYEA08UHXDfHpU2Nbl1v0ah65JgepGOizC24oGd9W8e6QIQzHN8CVcT+
-yU0qhXD3y2o8CpzQO02er8WluHkgTZLu0xxggoXdtN6F5jyPW/Ig4nC5fCNER4HD
-MNzQYpRwvJAouaDaygKfZ42RCLS33pAfHaS3u/ooPm57+Pw3/+Qz3L8CgYEA/5nW
-qwwahM4FzpYONaFY9cWQWohoyLDEM+nJqWApMmSKBoqeWWSry44agwloH0xZ/Ugq
-8qayXYrXa0JD7DZ5NxXJ/k8yCg0E4N4g33J4Tau4x0tEgdKw+2/zHgvSnH4bF4KW
-MYnxYWyRbB5XliOPG1lfsBsGxfNEEuK94jyRUbcCgYAUWpyhfW7/8VtFn09vDE17
-iS9wx27PRxm2uRuwZZr+NnafMMQNsFh4yqTqnHgEohpRPs840/YLmOibuXCkZBn2
-SoTwJqOvja+6+FkjEjuc6A674rveT5eOK7sProrDZOu1I8PDpMrjbhThjFUb3ChR
-dhJ+y8VwcrgRr1RGkQ13CwKBgQDR+EFln/rE8C3LCG/B1Lqso1AzXu2dN8Dl2H7m
-Ge2dzQOp3gO48b9C54iV7otPcrxWGgvV6+SIfX77SKNdj15CRy75L3uu0AUa6L7e
-cD2tqIyRgx5S+46R7uQr4ZBxKBL/XDIfne7hlntb8w0GdE2iLOgzVfBZer6IOSW9
-jP3fvwKBgQDBPvt9E3AuHv6a2/aZmIggo7muPbolZPqM4ZB1+w4wyb5UsZuMALdM
-SEM0PUzcR6yYDoIkZSq3HQuI1BY6qS3a8COniKkT2mFEpSfri+cErb3h7gwYhUkx
-QkuJJVGLNNucKccquH/+NXTWaD9Isd4kmvY33YChb3n6l8SLTtZWNA==
------END PRIVATE KEY-----
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpgIBAAKCAQEArYkPlffsyC0G1wZPhF0pcQFudgBltGfUiW4xlR3IWUbpxZaL
+lWDdmVWCJW6NRs4Qqif5I0+zNGbW3ml0a0NCUxtuHlVhGuo80T6D4FqWXEyJh4Qv
+ey6k2J9suVahlcZ8SfkXtcojCIwotQ/OlDjvpkfBvCzGEcj1UjiWlso7msSFJ7eQ
+BJ8vsue/nO6APpN9ZoacQIF2QyPPrfHOlLN2tNjnNR4YCyDdZdekHALJTAIhN459
+Cp7bL60QvwrEx1jXFeb6NhETMEvmG3I+ypQUac4dIrSxQs6pIkgYGU/AFbTcJuo6
+XMmigmWuuCfrNEEqTK+uMezo4uK7stF6jArI7wIDAQABAoIBAQCLYqvCKYFmx8PW
+sprsFmhS/HNdFLScU0nDmV76BxIFo4/hxSoYsdVMdAI1TrbrSFjaU4Epe7rVPEUa
+IFoCTePYHRA2DR4SIFL5Pt1uN1TOjitpTiNVLgH6fRM3Sv4+706lnA4PVm0NUIbh
+5/Bl3dWgGcLjApOVdXSWth0+wPFfPWcZlykFCXir4JiC5Q18LHkTopcIRf6pj8hf
+9+EUSXFcSUlpIr+tVLgFwZ39eE8XdF/RLaySWeaRUQV7NH5lrpnUQ7Qo6h+hF56p
+sXpwEFdQxvc9CdWOZh4eULRHaSRInhF/RuFSOiW9CXDbSzQOVYUEFbk/XvKX4qr6
+dblEUFQBAoGBAN7EvLsJklOfwhYCIh6HzBGDjJYv5arQeLwxKU2xlW9MGj/zK06v
+rkJu3jLChMIR37HjVebg+4pQaKB54wxop6OoRXRMdJf7aIrTsyQwI7EOChDHtffS
++JlaTnMkBtkBvbew/bdEdCH0MWzK6AcwSxKnaOJtVuUy3dki4IX2jwNfAoGBAMds
+K4d/tPGaQr4hRMEa38A728frHixTUVmYy0yxu82lJwx6iTsx8+bviRCOc4pXOBvj
+VCSOwvEcAFIFEVdx7R4/48cOqGw2VM6XMP/79lf+Fsz/U+pXHPcD+T4hLttR5Fc0
+6RXhk6KGMYtbmwLcOxhMmNKDQyKzfrlWC8hCpTRxAoGBAJwWfacQLdcqOXPySrXZ
+sMMUyYzyQppNOEukpqwpoes6B6qHV/DqZ89kn4wxf5P7siGSiL4dJiLj9Gt8+/nV
+2qBxZzj12TwkjDu52euhT2Df1W2sgXQD/ux0ukMzGxkyfxwWh6/B5x1jXL497hYb
+YH7RjkwZEKnH2moqZed3uv1BAoGBALP2k9m1j46wTSbTUv6Ix/7shcwGC7aogbM/
+RceyZO6R6YlDU3BOBfMTmzeLtgzT5NiV76sGAjofsNJTrHCjaP5xXZaXTbpJ1YKR
+wjBgKtEBhYX9rLa/Ym4v8c71lxlo740bPHT4moiCXVeLlXmhUNr+1LK0rfM01Flg
+o0VXj0qhAoGBAJznWoEleWIcViBnRp8Y76chUJ1wj5dqRPZeIBXNaJMiNfGL/dCA
+cKMjiN69g5Tiuxxu/7/Cao4axnqIrG+0vp/St6gBs2XPw5lfp+502voK6zBW7dFS
+35ABLg+hy8ICHR8xGcQhgnDqZOc/0T2btHjPz1datOrn9MGdHAEDmFQ4
+-----END RSA PRIVATE KEY-----
+
 `
 // 初始化设置公钥和私钥
 func init() {
-	if err := RSA.SetPublicKey(Pubkey); err != nil {
-		log.Fatalln(`set public key :`, err)
-	}
+	//if err := RSA.SetPublicKey(Pubkey); err != nil {
+	//	log.Fatalln(`set public key :`, err)
+	//}
 	if err := RSA.SetPrivateKey(Pirvatekey); err != nil {
 		log.Fatalln(`set private key :`, err)
 	}
@@ -73,5 +74,23 @@ func Test_加密解密(t *testing.T) {
 	fmt.Println("解析后字符串为：", string(pridecrypt))
 	fmt.Println("加密后字符串为：", base64.StdEncoding.EncodeToString(pubenctypt))
 	fmt.Println(string(pridecrypt))
+
+}
+
+// 公钥加密私钥解密
+func Test_解密(t *testing.T) {
+	// 源base64字符串
+	str := "n9yTXxDHF0SpJPWaKmzFNlT8DctTYhCiqeUtf7ZWkmd5hpln19Z8hKEYyA79wZpH//RO45mJi5IA65OZG/Yde4/cR80V2I+Kat4Y5HnfsuuFMnKYzTfZIqlwf9WGwolkpv8WDmmBwYSPO0dfoncyPYN5GdRsX8HPFKrWe/Zl0Ogi1BTtmAKSIdWMRVeBPgQ2Kyi6YTyexAuVtaeQw0hGraRzYqwgoJOF1yjcLTpYYtPJF3teFvK1lqZuMOho0ZbEw1SoXkXWp7peX2vlWjs4b34sfLTfeEbEigQCwqEw5g6EfA6cRkdILvL/chCr3ZiliWVkOeB77HzSgR8TK3d8lg=="
+	// base解码后的字符数组
+	decodeBytes, err := base64.StdEncoding.DecodeString(str)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	pridecrypt, err := RSA.RsaDecrypt(decodeBytes)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println("解析后字符串为：", string(pridecrypt))
 
 }
