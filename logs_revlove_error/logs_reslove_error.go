@@ -7,6 +7,8 @@ import (
 	"encoding/base64"
 	"go-demo/rsa"
 	"encoding/json"
+	"os"
+	"bufio"
 )
 
 var Pirvatekey = `
@@ -82,15 +84,18 @@ func getAllErrorLog() {
 		err = Logs_traffic_collection.Find(bson.M{"crawlId": results[i].CrawlId}).One(&trafficItem)
 		if err != nil {
 			fmt.Println("查询发生了错误", err)
+			break
 		}
 		mapKey := results[i].Platform + results[i].ErrMessage
 		decodeBytes, err := base64.StdEncoding.DecodeString(trafficItem.RequestBody)
 		if err != nil {
 			fmt.Println("解密发生了错误", err)
+			break
 		}
 		pridecrypt, err := RSA.RsaDecrypt(decodeBytes)
 		if err != nil {
 			fmt.Println(err)
+			break
 		}
 		mapValue := string(pridecrypt)
 
@@ -98,17 +103,40 @@ func getAllErrorLog() {
 		err = json.Unmarshal([]byte(mapValue), &jsonName)
 		if err != nil {
 			fmt.Println("转json出错了", err)
+			break
 		}
 		jsonStr, err := json.Marshal(jsonName)
 		if err != nil {
 			fmt.Println("转string出错了", err)
+			break
 		}
 		mapValue = string(jsonStr)
 		myMap[mapKey] = mapValue
 
 	}
+
+	// 打印输出结果
 	for key, value := range myMap {
 		fmt.Println(value, "----------", key)
 	}
+	err = WriteMaptoFile(myMap, "C:/Users/user/Desktop/错误日志的平台账号和密码.txt")
+	if err != nil {
+		fmt.Println("写文件出错", err)
+	}
+}
 
+func WriteMaptoFile(m map[string]string, filePath string) error {
+	f, err := os.Create(filePath)
+	if err != nil {
+		fmt.Printf("create map file error: %v\n", err)
+		return err
+	}
+	defer f.Close()
+
+	w := bufio.NewWriter(f)
+	for k, v := range m {
+		lineStr := fmt.Sprintf("%s----%s", v, k)
+		fmt.Fprintln(w, lineStr)
+	}
+	return w.Flush()
 }
