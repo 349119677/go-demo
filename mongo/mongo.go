@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"gopkg.in/mgo.v2"
 	"time"
-	//"gopkg.in/mgo.v2/bson"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -93,7 +92,7 @@ func SelectByPrimaryKey() {
 	id := "59c4b0fa09ae418aac652949"
 	objectId := bson.ObjectIdHex(id)
 	//collection.Find(bson.M{"_id": objectId}).One(&result)
-	collection.UpdateAll(bson.M{"_id": objectId},bson.M{"$set": bson.M{"id": 79797988}})
+	collection.UpdateAll(bson.M{"_id": objectId}, bson.M{"$set": bson.M{"id": 79797988}})
 	//for _, m := range ms {
 	//	fmt.Printf(m.Create_time)
 	//}

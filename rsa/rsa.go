@@ -1,4 +1,4 @@
-package myRsa
+package rsa
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 	"crypto/rand"
 )
 
-var RSA = &RSASecurity{}
+
 
 type RSASecurity struct {
 	pubStr string          //公钥字符串

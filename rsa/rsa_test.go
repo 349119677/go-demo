@@ -1,4 +1,4 @@
-package myRsa
+package rsa
 
 import (
 	"log"
@@ -47,10 +47,11 @@ o0VXj0qhAoGBAJznWoEleWIcViBnRp8Y76chUJ1wj5dqRPZeIBXNaJMiNfGL/dCA
 cKMjiN69g5Tiuxxu/7/Cao4axnqIrG+0vp/St6gBs2XPw5lfp+502voK6zBW7dFS
 35ABLg+hy8ICHR8xGcQhgnDqZOc/0T2btHjPz1datOrn9MGdHAEDmFQ4
 -----END RSA PRIVATE KEY-----
-
 `
+var RSA = &RSASecurity{}
 // 初始化设置公钥和私钥
 func init() {
+
 	//if err := RSA.SetPublicKey(Pubkey); err != nil {
 	//	log.Fatalln(`set public key :`, err)
 	//}
@@ -80,7 +81,7 @@ func Test_加密解密(t *testing.T) {
 // 公钥加密私钥解密
 func Test_解密(t *testing.T) {
 	// 源base64字符串
-	str := "I0LxT8boKHSOR2cPyYm69w5zoo2Y9xWuEDZ4dKMoH/TXsd0IMcEjv0SNHQJP5FyOnsjvy87lDcZIRPIPI+uHihRTDgSDvNuywf4mnZdxcTdlL+954DwaRtec0pCpKtQAznlT22G9K1QgrXNkz+/IogIOU3eeShGhjTT3DNnO8JUEAvzEbZDLWRG9d7x3jjQU7JfpSO71UdluGCRXOQqCs9Ia0n86R9Zc914vKx2lH3/N8PblbgajAEBOH4aUVe3mkBer5mIZ1Dl9cVa6ULM0ycha5ntdKioIjhXTyvzvvw/dbPIpUdHqoPi65qEPyTU5k6qSUhHKx6SDZAofMBzEyQ=="
+	str := "P5P1+red9C2b0qOmPFcIQeFRIs+6ywPZlvpZLgWVHArRM8XE1OBSt0u3UUI5sp42m6uxHH/AiVqHCqJwH6Fh2d2Gc5UQ2EuoRsbQgCSGsR9TSyo0SMEpF3l4Q1hhOmeE4K9+c3edYUBPfBsjhpIS3iXCqRCrvDMmLsvUD9sy+0S1/kPDIXY6qHqzGiDyGWq368nqTxXkbA5PqYenbW81MR+JT5vQcMm5qkjF9Ig8qH5ovzGozNkfL9wHFhZlBFmJReaMVlimf+LuU8gtEeiCGE8P/ybQVs/LriK9fTFk3eXw6xKT/zLtJAHxTD5IM7Ci9uRzYWvb48jXB9ICj7ESmw=="
 	// base解码后的字符数组
 	decodeBytes, err := base64.StdEncoding.DecodeString(str)
 	if err != nil {
