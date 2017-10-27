@@ -56,18 +56,17 @@ type Traffic struct {
 type MyJsonName struct {
 	Password string `json:"password"`
 	Phone    string `json:"phone"`
-	Platform string `json:"platform"`
 }
 
 var RSA = rsa.RSASecurity{}
 // 获取所有的错误日志
-func getAllErrorLog() {
+func getAllErrorLog(dateStr string) {
 	Connect()
 	defer SafeClose()
 	// 查询多条数据
 	var results []LogsResolveError
 	loc, _ := time.LoadLocation("Local")
-	endTime, err := time.ParseInLocation("2006-01-02 15:04:05", "2017-10-26 15:58:44", loc)
+	endTime, err := time.ParseInLocation("2006-01-02 15:04:05", dateStr, loc)
 	if err != nil {
 		fmt.Println("时间发生了错误", err)
 	}
@@ -77,7 +76,6 @@ func getAllErrorLog() {
 	}
 
 	myMap := make(map[string]string)
-
 	for i := 0; i < len(results); i++ {
 		// 获取账号密码
 		var trafficItem Traffic
@@ -86,7 +84,6 @@ func getAllErrorLog() {
 			fmt.Println("查询发生了错误", err)
 			break
 		}
-		mapKey := results[i].Platform + results[i].ErrMessage
 		decodeBytes, err := base64.StdEncoding.DecodeString(trafficItem.RequestBody)
 		if err != nil {
 			fmt.Println("解密发生了错误", err)
@@ -97,10 +94,9 @@ func getAllErrorLog() {
 			fmt.Println(err)
 			break
 		}
-		mapValue := string(pridecrypt)
 
 		var jsonName MyJsonName
-		err = json.Unmarshal([]byte(mapValue), &jsonName)
+		err = json.Unmarshal([]byte(string(pridecrypt)), &jsonName)
 		if err != nil {
 			fmt.Println("转json出错了", err)
 			break
@@ -110,14 +106,10 @@ func getAllErrorLog() {
 			fmt.Println("转string出错了", err)
 			break
 		}
-		mapValue = string(jsonStr)
-		myMap[mapKey] = mapValue
+		mapValue := string(jsonStr)
+		mapKey := results[i].Platform + "----" + results[i].ErrMessage
+		myMap[mapKey] = results[i].Platform + "----" + mapValue + "----" + results[i].ErrMessage
 
-	}
-
-	// 打印输出结果
-	for key, value := range myMap {
-		fmt.Println(value, "----------", key)
 	}
 	err = WriteMaptoFile(myMap, "C:/Users/user/Desktop/错误日志的平台账号和密码.txt")
 	if err != nil {
@@ -134,8 +126,8 @@ func WriteMaptoFile(m map[string]string, filePath string) error {
 	defer f.Close()
 
 	w := bufio.NewWriter(f)
-	for k, v := range m {
-		lineStr := fmt.Sprintf("%s----%s", v, k)
+	for _, v := range m {
+		lineStr := fmt.Sprintf("%s", v)
 		fmt.Fprintln(w, lineStr)
 	}
 	return w.Flush()

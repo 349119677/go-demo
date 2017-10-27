@@ -13,5 +13,6 @@ func init() {
 }
 
 func TestConnect(t *testing.T) {
-	getAllErrorLog()
+	dateStr := "2017-10-26 22:00:00"
+	getAllErrorLog(dateStr)
 }
