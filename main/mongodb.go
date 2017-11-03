@@ -1,4 +1,4 @@
-package logs_revlove_error
+package main
 
 import (
 	"gopkg.in/mgo.v2"
