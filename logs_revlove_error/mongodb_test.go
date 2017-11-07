@@ -14,7 +14,7 @@ func init() {
 
 // 时间点之后的所有日志
 func TestConnect(t *testing.T) {
-	dateStr := "2017-10-30 4:00:00"
+	dateStr := "2017-11-05 4:00:00"
 	getAllErrorLog(dateStr)
 }
 
