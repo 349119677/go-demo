@@ -1,11 +1,125 @@
-package main
+package lol
 
 import (
 	"fmt"
+	"net/http"
+	"github.com/op/go-logging"
+	"io/ioutil"
+	"strings"
+	"errors"
+	"time"
 	"github.com/robertkrimen/otto"
 )
 
-func main() {
+var (
+	log = logging.MustGetLogger("LOL")
+)
+
+func (this *LOL) run() {
+	err := this.getLogSig()
+	if err != nil {
+		log.Warning(err.Error())
+	}
+	isNeedCode, err := this.checkIsNeedCode()
+	if err != nil {
+		log.Warning(err.Error())
+	}
+	err = this.getEncPassword()
+	fmt.Println("是否需要验证码：", isNeedCode)
+	loginSuccess, err := this.login()
+	if err != nil {
+		log.Warning(err.Error())
+	}
+	fmt.Println("登陆结果为：", loginSuccess)
+}
+
+// 获取 login_sig 在cookie里面
+func (this *LOL) getLogSig() (error) {
+	log.Info("开始获取logSig---------------------------------------------------------------------------------------------------------------------------------------------------------")
+	url := "https://xui.ptlogin2.qq.com/cgi-bin/xlogin?appid=" + this.AppId + "&s_url=http://lol.qq.com/"
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		log.Notice(err.Error())
+		return err
+	}
+	client := &http.Client{
+		Jar: this.Jar,
+	}
+	res, err := client.Do(req)
+	if err != nil {
+		log.Notice(err.Error())
+		return err
+	}
+	defer res.Body.Close()
+	_, err = ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Notice(err.Error())
+		return err
+	}
+	// 获取到logSig
+	for _, item := range res.Cookies() {
+		fmt.Println("当前cookie为：", item)
+		if item.Name == "pt_login_sig" {
+			this.LoginSig = item.Value
+			log.Debug("获取到的logSig为%s", this.LoginSig)
+			return err
+		}
+	}
+	log.Info("获取logSig结束---------------------------------------------------------------------------------------------------------------------------------------------------------")
+	return errors.New("获取logSig好像出现了异常")
+}
+
+// 检查是否需要验证码
+func (this *LOL) checkIsNeedCode() (bool, error) {
+	log.Info("开始检查是否需要验证码---------------------------------------------------------------------------------------------------------------------------------------------------------")
+	url := "https://ssl.ptlogin2.qq.com/check?" +
+		"pt_tea=2&uin=" + this.QQ +
+		"&appid=" + this.AppId +
+		"&login_sig=" + this.LoginSig
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		log.Notice(err.Error())
+		return false, err
+	}
+	client := &http.Client{
+		Jar: this.Jar,
+	}
+	res, err := client.Do(req)
+	if err != nil {
+		log.Notice(err.Error())
+		return false, err
+	}
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Notice(err.Error())
+		return false, err
+	}
+	if res.StatusCode != 200 {
+		return false, errors.New("请求失败")
+	}
+	checkList := strings.Split(string(body), ",")
+	if len(checkList) < 5 {
+		return false, errors.New("网络错误")
+	}
+	if checkList[0] == "ptui_checkVC('0'" {
+		log.Notice("不需要验证码")
+		this.PtVcodeV1 = "0"
+		this.Code = checkList[1]
+		return false, nil
+	}
+	if checkList[0] == "ptui_checkVC('1" {
+		log.Notice("需要验证码")
+		this.PtVcodeV1 = "1"
+		this.CapCd = checkList[1]
+		return true, nil
+	}
+	log.Info("检查是否需要验证码结束---------------------------------------------------------------------------------------------------------------------------------------------------------")
+	return false, errors.New("检查是否需要验证码好像出现了异常")
+}
+
+// 获取加密后的密码
+func (this *LOL) getEncPassword() (error) {
 
 	vm := otto.New()
 	//vm.Run()这里面是javascript代码,下面这段代码，是QQ空间提取出来的。
@@ -1019,7 +1133,60 @@ function uin2hex(str) {
 }
 `)
 	//使用vm.Call(函数名,nil,传递的参数,如果后面有多个参数，用逗号隔开就可以了)
-	value, _ := vm.Call("getPwd", nil, "8814372", "","!OXY")
+	fmt.Println(this.QQ, this.Password, this.Code)
+	value, _ := vm.Call("getPwd", nil, this.Password, this.QQ, this.Code)
 	fmt.Println(value)
+	return errors.New("获取加密后的密码好像出现了异常")
+}
 
+// 执行登陆操作
+func (this *LOL) login() (bool, error) {
+	log.Info("开始登陆---------------------------------------------------------------------------------------------------------------------------------------------------------")
+	action := "2-13-" + string(time.Now().Unix())
+	url := "https://ssl.ptlogin2.qq.com/login?" +
+		"u=" + this.QQ +
+		"&verifycode=" + this.Code +
+		"&pt_vcode_v1=" + this.PtVcodeV1 +
+		"&pt_verifysession_v1=" + this.PtVerifySessionV1 +
+		"&pt_randsalt=2" +
+		"&pt_jstoken=1897729870" +
+		"&u1=http://lol.qq.com/" +
+		"&ptredirect=1" +
+		"&h=1" +
+		"&t=1" +
+		"&g=1" +
+		"&from_ui=1" +
+		"&ptlang=2052" +
+		"&action=" + action +
+		"&js_ver=10232" +
+		"&js_type=1" +
+		"&login_sig=" + this.LoginSig +
+		"&pt_uistyle=40" +
+		"&aid=" + this.AppId +
+		"&"
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		log.Notice(err.Error())
+		return false, err
+	}
+	client := &http.Client{
+		Jar: this.Jar,
+	}
+	res, err := client.Do(req)
+	if err != nil {
+		log.Notice(err.Error())
+		return false, err
+	}
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Notice(err.Error())
+		return false, err
+	}
+	if res.StatusCode != 200 {
+		return false, errors.New("请求失败")
+	}
+	fmt.Println(string(body))
+	log.Info("登陆结束---------------------------------------------------------------------------------------------------------------------------------------------------------")
+	return false, errors.New("登陆好像出现了异常")
 }
