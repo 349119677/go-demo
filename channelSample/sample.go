@@ -156,15 +156,16 @@ func sample8() {
 		<-quit
 	}
 }
+
 // 方案2 把信道换成缓冲1000的
 func sample9() {
 	count := 10
-	quit = make(chan int,10)
+	quit = make(chan int, 10)
 
 	for i := 0; i < count; i++ {
 		go foo(i)
 	}
 	for i := 0; i < count; i++ {
-		<- quit
+		<-quit
 	}
 }
